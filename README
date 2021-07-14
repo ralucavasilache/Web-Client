@@ -1,0 +1,60 @@
+NUME: Vasilache Raluca
+GRUPA: 324CA
+
+
+				Tema #3 : Client Web. Comunicatie cu REST API.
+				
+				
+	OBS: Am preluat din laboratorul 10 fisierele:
+	- buffer.c, buffer.h, requests.c, requests.h, helpers.c, helpers.h, client.c, client.h
+	- Makefile
+	
+	Am adaugat in acestea diverse functii necesare pentru implementarea proiectului.
+	Am adaugat in folder si fisierele parson.c si parson.h, folosite pentru parsarea
+	fisierelor JSON, asa cum este sugerat in enunt. 
+	
+	* helpers.c
+	Am adaugat urmatoarele functii:
+	- login_prompt, register_prompt, get_book_prompt, delete_book_prompt, add_book_prompt:
+	ofera prompt pentru campurile specifice, citesc datele introduse de utilizator si 
+	le memoreaza in variabilele primite ca parametri
+	
+	- compute_add_book_json, compute_register_json, compute_login_json: stocheaza datele
+	primite in format json, folosind functiile din parson.c; intorc un string
+	reprezentand rezultatul
+
+	- extract_token, extract_cookie: primesc raspunsul server-ului, cauta si memoreaza
+	in variabila coockie/token valoarea campului
+	- compute url: primeste un url si o informatie noua si intoarce in new_url, un url nou
+	format prin concatenarea informatiei la url-ul vechi
+	
+	- parse_server_response_to_X: primeste raspunsul de la server, il parseaza in cautarea
+	informatiilor care trebuiau primite/mesajelor de eroare; printeaza informatiile sau
+	mesajul de eroare (uneori cu anumite clarificari)
+	
+	*requests.c
+	- functiile compute_get_request si compute_get_request au fost preluate din laborator.
+	am adaugat parametrul token, iar daca acesta nu este NULL in mesaj se va scrie si headerul
+	"Authorization"
+	- am creat functia compute_delete_request dula modelul oferit de compute_get_request
+	
+	* client.c
+	- se citeste o comanda de la tatstatura si se verifica tipul acesteia
+	- pentru fiecare comanda se va urma o o serie de pasi
+	1. apelarea functiei care ofera prompt pentru comanda respectiva (daca este cazul)
+	2. memorarea datelor in format json (daca este cazul)
+	3. crearea mesajului care va fi trimis catre server
+	4. deschiderea conexiunii cu server-ul
+	5. trimiterea mesajului la server
+	6. primirea raspunsului dat de server
+	7. apelarea functiei care parseaza raspunsul dat de server si afiseaza mesajele de eroare/
+	informatia primita ca raspuns la un request
+	8. inchiderea conexiunii si eliberarea memoriei pentru mesaj si raspuns
+	
+	In plus:
+	- pentru o comanda de tip login se extrage coockie-ul si se memoreaza pentru a putea fi
+	folosit ulterior
+	- pentru o comanda de tip enter_library se extrage token-ul si se memoreaza pentru a putea
+	fi folosit ulterior.
+	- pentru functiile get_book si delete_book se creeaza url-ul necesar prin concatenarea
+	id-ului la ur-ul specific, inainte de trimiterea mesajului catre server
